@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newsletter Signup - Stay Updated</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --primary-dark: #2563eb;
+            --secondary-color: #f8fafc;
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --border-color: #e2e8f0;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: var(--text-primary);
+        }
+
+        .container {
+            background: var(--white);
+            border-radius: 24px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            max-width: 1000px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 500px;
+        }
+
+        .content-section {
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .image-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.1) 1px, transparent 1px),
+                        radial-gradient(circle at 70% 80%, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px, 80px 80px;
+            opacity: 0.3;
+        }
+
+        .illustration {
+            width: 250px;
+            height: 250px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .illustration svg {
+            width: 120px;
+            height: 120px;
+            color: white;
+        }
+
+        .header {
+            margin-bottom: 40px;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .form-container {
+            flex: 1;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--white);
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            transform: none;
+        }
+
+        .form-input:hover:not(:focus) {
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-input.error {
+            border-color: var(--error-color);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        .form-input.success {
+            border-color: var(--success-color);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 0.875rem;
+            margin-top: 8px;
+            display: none;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .error-message.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px 32px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 20px;
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .submit-btn:active:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+
+        .submit-btn:disabled {
+            background: var(--text-secondary);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .privacy-note {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .success-message {
+            background: var(--success-color);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 500;
+            margin-bottom: 20px;
+            display: none;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .success-message.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow);
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .theme-toggle:active {
+            transform: scale(1.05);
+        }
+
+        .theme-toggle svg {
+            width: 24px;
+            height: 24px;
+            color: white;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #3b82f6;
+            --primary-dark: #2563eb;
+            --secondary-color: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --white: #0f172a;
+        }
+
+        [data-theme="dark"] body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+
+        [data-theme="dark"] .container {
+            background: var(--white);
+        }
+
+        [data-theme="dark"] .form-input {
+            background: var(--secondary-color);
+            color: var(--text-primary);
+        }
+
+        [data-theme="dark"] .theme-toggle {
+            background: #475569;
+        }
+
+        [data-theme="dark"] .theme-toggle:hover {
+            background: #334155;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 0.6s ease-in-out;
+        }
+
+        .loading {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1200px;
+            }
+            
+            .content-section {
+                padding: 80px 70px;
+            }
+            
+            .title {
+                font-size: 3rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+            }
+
+            .image-section {
+                order: -1;
+                min-height: 200px;
+            }
+
+            .illustration {
+                width: 150px;
+                height: 150px;
+            }
+
+            .illustration svg {
+                width: 80px;
+                height: 80px;
+            }
+
+            .content-section {
+                padding: 40px 30px;
+            }
+
+            .title {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .content-section {
+                padding: 30px 20px;
+            }
+
+            .title {
+                font-size: 1.75rem;
+            }
+        }
+
+        @media (max-width: 375px) {
+            .privacy-note {
+                font-size: 0.85rem;
+                line-height: 1.5;
+                padding: 0 10px;
+            }
+            
+            .content-section {
+                padding: 25px 15px;
+            }
+            
+            .form-input {
+                padding: 14px 16px;
+                font-size: 0.95rem;
+            }
+            
+            .submit-btn {
+                padding: 14px 24px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+            <svg fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+            </svg>
+        </button>
+
+        <div class="image-section">
+            <div class="illustration">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
+                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+                </svg>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="header">
+                <h1 class="title">Subscribe to Our Newsletter</h1>
+                <p class="subtitle">Get the latest internship updates, career tips, and tech insights delivered straight to your inbox.</p>
+            </div>
+
+            <div class="form-container">
+                <div aria-live="polite" aria-atomic="true" class="sr-only" id="announcements"></div>
+                
+                <div class="success-message" id="successMessage">
+                    Thank you for subscribing! We'll keep you updated with the latest opportunities.
+                </div>
+
+                <form id="newsletterForm" novalidate>
+                    <div class="form-group">
+                        <label for="fullName" class="form-label">Full Name</label>
+                        <input type="text" id="fullName" class="form-input" placeholder="Enter your full name" required aria-describedby="nameError">
+                        <div class="error-message" id="nameError" role="alert">Please enter your full name</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" id="email" class="form-input" placeholder="Enter your email address" required aria-describedby="emailError">
+                        <div class="error-message" id="emailError" role="alert">Please enter a valid email address</div>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        Subscribe to Newsletter
+                    </button>
+                </form>
+
+                <p class="privacy-note">
+                    We respect your privacy. No spam ever. Unsubscribe at any time.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            
+            try {
+                localStorage.setItem('theme', newTheme);
+            } catch (e) {
+                console.log('Theme preference could not be saved');
+            }
+            
+            const themeBtn = document.querySelector('.theme-toggle');
+            if (themeBtn) {
+                themeBtn.classList.add('pulse');
+                setTimeout(() => {
+                    themeBtn.classList.remove('pulse');
+                }, 600);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            let savedTheme = 'light';
+            try {
+                savedTheme = localStorage.getItem('theme') || 'light';
+            } catch (e) {
+                console.log('Could not access localStorage for theme');
+            }
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        });
+
+        document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const submitBtn = document.getElementById('submitBtn');
+            const announcements = document.getElementById('announcements');
+            
+            clearErrors();
+            
+            let isValid = true;
+            let errorMessages = [];
+            
+            if (!fullName) {
+                showError('nameError', 'Please enter your full name');
+                errorMessages.push('Name is required');
+                isValid = false;
+            } else if (fullName.length < 2) {
+                showError('nameError', 'Name must be at least 2 characters long');
+                errorMessages.push('Name must be at least 2 characters long');
+                isValid = false;
+            }
+            
+            const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+            if (!email) {
+                showError('emailError', 'Please enter your email address');
+                errorMessages.push('Email is required');
+                isValid = false;
+            } else if (!emailRegex.test(email)) {
+                showError('emailError', 'Please enter a valid email address');
+                errorMessages.push('Email format is invalid');
+                isValid = false;
+            }
+            
+            if (!isValid) {
+                announcements.textContent = 'Form has errors: ' + errorMessages.join(', ');
+                return;
+            }
+            
+            submitBtn.textContent = 'Subscribing...';
+            submitBtn.disabled = true;
+            submitBtn.classList.add('loading');
+            
+            setTimeout(() => {
+                try {
+                    const subscriber = {
+                        name: fullName,
+                        email: email,
+                        subscribedAt: new Date().toISOString()
+                    };
+                    localStorage.setItem('newsletterSubscription', JSON.stringify(subscriber));
+                } catch (error) {
+                    console.log('LocalStorage not available, continuing without storage');
+                }
+                
+                const successMsg = document.getElementById('successMessage');
+                const form = document.getElementById('newsletterForm');
+                
+                if (successMsg && form) {
+                    successMsg.classList.add('show');
+                    form.style.display = 'none';
+                    successMsg.classList.add('pulse');
+                    
+                    announcements.textContent = 'Successfully subscribed to newsletter!';
+                    
+                    setTimeout(() => {
+                        successMsg.classList.remove('show');
+                        form.style.display = 'block';
+                        form.reset();
+                        clearErrors();
+                        submitBtn.textContent = 'Subscribe to Newsletter';
+                        submitBtn.disabled = false;
+                        announcements.textContent = '';
+                    }, 4000);
+                }
+                
+                submitBtn.classList.remove('loading');
+            }, 1500);
+        });
+        
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            const inputElement = errorElement.previousElementSibling;
+            
+            if (errorElement && inputElement) {
+                errorElement.textContent = message;
+                errorElement.classList.add('show');
+                inputElement.classList.remove('success');
+                inputElement.classList.add('error');
+                inputElement.classList.add('pulse');
+                
+                setTimeout(() => {
+                    inputElement.classList.remove('pulse');
+                }, 600);
+            }
+        }
+        
+        function clearErrors() {
+            const errorMessages = document.querySelectorAll('.error-message');
+            const inputs = document.querySelectorAll('.form-input');
+            
+            errorMessages.forEach(error => {
+                error.classList.remove('show');
+            });
+            
+            inputs.forEach(input => {
+                input.classList.remove('error', 'success');
+            });
+        }
+
+        const nameInput = document.getElementById('fullName');
+        const emailInput = document.getElementById('email');
+        
+        if (nameInput) {
+            nameInput.addEventListener('input', function() {
+                const nameError = document.getElementById('nameError');
+                if (this.value.trim().length >= 2) {
+                    if (nameError) nameError.classList.remove('show');
+                    this.classList.remove('error');
+                    this.classList.add('success');
+                } else {
+                    this.classList.remove('success');
+                }
+            });
+        }
+        
+        if (emailInput) {
+            emailInput.addEventListener('input', function() {
+                const emailError = document.getElementById('emailError');
+                const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+                if (emailRegex.test(this.value.trim())) {
+                    if (emailError) emailError.classList.remove('show');
+                    this.classList.remove('error');
+                    this.classList.add('success');
+                } else {
+                    this.classList.remove('success');
+                }
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                const subscription = localStorage.getItem('newsletterSubscription');
+                if (subscription) {
+                    const data = JSON.parse(subscription);
+                    console.log('Previous subscription found:', data);
+                }
+            } catch (e) {
+                console.log('Could not access previous subscription data');
+            }
+        });
+    </script>
+</body>
+</html>
